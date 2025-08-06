@@ -10,6 +10,44 @@ Then to run the project you will need the command
 ```
 npm run start
 ```
+# Unit testing with Jest
+
+Then run your tests with
+```
+npm test
+```
+
+**Example**
+```ts
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MyComponent } from './my.component';
+
+describe('MyComponent', () => {
+  let component: MyComponent;
+  let fixture: ComponentFixture<MyComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [MyComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(MyComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should display title', () => {
+    component.title = 'Test Title';
+    fixture.detectChanges();
+    const element = fixture.nativeElement.querySelector('h1');
+    expect(element.textContent).toContain('Test Title');
+  });
+});
+```
 
 # Architecture
 
@@ -47,6 +85,12 @@ angular-starter/
 
 # Dependencies
 The project has installed:
-- Taiga UI
-<img width="250" height="400" alt="1968221399122de6170bd6196b6a8456f51653c5" src="https://github.com/user-attachments/assets/c24c1c84-9253-4569-ad6d-28f269eb399e" />
+- **Taiga UI**
+<img width="250" height="400" alt="Taiga UI" src="https://github.com/user-attachments/assets/c24c1c84-9253-4569-ad6d-28f269eb399e" />
+
+<br>
+
+- **Jest (Unit Testing)**
+<img width="250" height="400" alt="Jest" src="https://github.com/user-attachments/assets/0a2138c5-1b2a-472c-8c32-196923dca2d1" />
+
 
