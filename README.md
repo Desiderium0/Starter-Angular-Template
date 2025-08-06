@@ -18,34 +18,49 @@ npm test
 ```
 
 **Example**
+1. Mocking with jest.fn()
 ```ts
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MyComponent } from './my.component';
+describe('DataService', () => {
+  let service: DataService;
+  const mockApiService = {
+    fetchData: jest.fn().mockReturnValue(of({ id: 1, name: 'Test' }))
+  };
 
-describe('MyComponent', () => {
-  let component: MyComponent;
-  let fixture: ComponentFixture<MyComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [MyComponent],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(MyComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        DataService,
+        { provide: ApiService, useValue: mockApiService }
+      ]
+    });
+    service = TestBed.inject(DataService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should call API service', () => {
+    service.getData();
+    expect(mockApiService.fetchData).toHaveBeenCalled();
   });
-
-  it('should display title', () => {
-    component.title = 'Test Title';
-    fixture.detectChanges();
-    const element = fixture.nativeElement.querySelector('h1');
-    expect(element.textContent).toContain('Test Title');
-  });
+});
+```
+2. Snapshot Testing
+```ts
+it('should render component correctly', () => {
+  const fixture = TestBed.createComponent(MyComponent);
+  fixture.detectChanges();
+  expect(fixture.nativeElement).toMatchSnapshot();
+});
+```
+3. Timer Control
+```ts
+it('should handle debounce correctly', () => {
+  jest.useFakeTimers();
+  const component = fixture.componentInstance;
+  
+  component.handleInput('test');
+  jest.advanceTimersByTime(300);
+  
+  expect(component.searchValue).toBe('test');
+  jest.useRealTimers();
 });
 ```
 
